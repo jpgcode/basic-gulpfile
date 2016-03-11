@@ -1,18 +1,18 @@
-var gulp = require('gulp');
-var watch = require('gulp-watch');
-var $ = require('gulp-load-plugins')();
+const gulp = require('gulp');
+const watch = require('gulp-watch');
+const $ = require('gulp-load-plugins')();
 var bs = require('browser-sync').create();
 
-gulp.task('notify:server', function(){
+gulp.task('notify:server', () => {
   return gulp.src('gulpfile.js')
       .pipe($.notify('Server ready!'));
 });
 
-gulp.task('reloadBrowsers',function(){
+gulp.task('reloadBrowsers', () => {
   return bs.reload();
 });
 
-gulp.task('default', function(){
+gulp.task('default', () => {
 
 	bs.init({
       notify: false,
