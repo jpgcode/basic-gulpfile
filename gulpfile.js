@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const watch = require('gulp-watch');
 const $ = require('gulp-load-plugins')();
-var bs = require('browser-sync').create();
+const bs = require('browser-sync').create();
 
 gulp.task('notify:server', () => {
   return gulp.src('gulpfile.js')
