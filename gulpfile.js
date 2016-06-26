@@ -1,25 +1,30 @@
-const gulp = require('gulp');
-const watch = require('gulp-watch');
-const $ = require('gulp-load-plugins')();
-const bs = require('browser-sync').create();
+var gulp        = require('gulp');
+var browserSync = require('browser-sync').create();
+var sass        = require('gulp-sass');
 
-gulp.task('notify:server', () => {
-  return gulp.src('gulpfile.js')
-      .pipe($.notify('Server ready!'));
+var src = {
+    scss: 'app/scss/*.scss',
+    css:  'app/css',
+    html: 'app/*.html'
+};
+
+// Static Server + watching scss/html files
+gulp.task('serve', ['sass'], function() {
+
+    browserSync.init({
+        server: "./app"
+    });
+
+    gulp.watch(src.scss, ['sass']);
+    gulp.watch(src.html).on('change', browserSync.reload);
 });
 
-gulp.task('reloadBrowsers', () => {
-  return bs.reload();
+// Compile sass into CSS
+gulp.task('sass', function() {
+    return gulp.src(src.scss)
+        .pipe(sass())
+        .pipe(gulp.dest(src.css))
+        .pipe(browserSync.reload({stream: true}));
 });
 
-gulp.task('default', () => {
-
-	bs.init({
-      notify: false,
-      port: 9000,
-      server: { baseDir: ['app'] }
-  });
-
-	gulp.watch(['app/*.html', 'app/**/*.js'], ['reloadBrowsers']);
-
-});
+gulp.task('default', ['serve']);
